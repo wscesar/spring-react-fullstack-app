@@ -4,6 +4,7 @@ import { getAllStudents } from './client'
 
 
 class App extends Component{
+  
   state = {
     students: []
   }
@@ -16,16 +17,32 @@ class App extends Component{
     getAllStudents().then(
       res => res.json().then(
         students => {
-          console.log(students)
-          this.setState({
-            students
-          });
+          this.setState({students});
         })
       );
   }
 
   render() {
-    return <h1>Hello from react</h1>
+    const { students } = this.state
+
+    if (students && students.length) {
+
+      return students.map((student, index) => {
+        return(
+          <div key={index}>
+            <h2>{student.studentId}</h2>
+            <p>{student.fistname}</p>
+            <p>{student.lastname}</p>
+            <p>{student.email}</p>
+            <p>{student.gender}</p>
+          </div>
+        )
+      });
+    
+    }
+
+    return <h1>No students found</h1>
+
   }
 }
 
