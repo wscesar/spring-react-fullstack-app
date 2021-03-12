@@ -1,13 +1,18 @@
 import { Component } from 'react'
-import { Table } from 'antd'
+import { Table, Avatar, Spin, Icon } from 'antd'
 import './App.css';
 import { getAllStudents } from './client'
+import { Container } from './Container'
+import { LoadingOutlined } from '@ant-design/icons';
 
+
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 class App extends Component{
   
   state = {
-    students: []
+    students: [],
+    isLoading: false
   }
 
   componentDidMount() {
@@ -15,21 +20,45 @@ class App extends Component{
   }
 
   fetchStudents = () => {
+    this.setState({
+      isLoading: true
+    })
+
     getAllStudents().then(
       res => res.json().then(
         students => {
-          console.log(students)
-          this.setState({students});
+          this.setState({
+            students,
+            isLoading: false
+          });
         })
       );
   }
 
   render() {
-    const { students } = this.state
+    const { students, isLoading } = this.state
+
+    if (isLoading) {
+      return <Container>
+        <Spin indicator={loadingIcon}></Spin>
+      </Container>
+    }
 
     if (students && students.length) {
 
       const columns = [
+        {
+          title: 'Avatar',
+          key: 'avatar',
+          render: (text, student) => (
+            <Avatar size='large'>
+              {
+                student.firstname.charAt(0).toUpperCase() +
+                student.lastname.charAt(0).toUpperCase()
+              }
+            </Avatar>
+          )
+        },
         {
           title: 'Student Id',
           dataIndex: 'studentId',
@@ -58,11 +87,14 @@ class App extends Component{
         }
       ]
 
-      return <Table
-        dataSource={students}
-        columns={columns}
-        rowKey='studentId'  
-        />
+      return <Container>
+        <Table
+          dataSource={students}
+          columns={columns}
+          pagination={false}
+          rowKey='studentId'  
+          />
+      </Container>
     
     }
 
