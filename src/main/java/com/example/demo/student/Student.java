@@ -5,16 +5,16 @@ import java.util.UUID;
 public class Student {
 
     private final UUID studentId;
-    private final String firstName;
+    private final String firstname;
     private final String lastname;
     private final String email;
     private final Gender gender;
 
     enum Gender {Male, Female}
 
-    public Student(UUID studentId, String firstName, String lastname, String email, Gender gender) {
+    public Student(UUID studentId, String firstname, String lastname, String email, Gender gender) {
         this.studentId = studentId;
-        this.firstName = firstName;
+        this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.gender = gender;
@@ -24,8 +24,8 @@ public class Student {
         return studentId;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
     public String getLastname() {
@@ -44,7 +44,7 @@ public class Student {
     public String toString() {
         return "Student{" +
                 "studentId=" + studentId +
-                ", firstName='" + firstName + '\'' +
+                ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", email='" + email + '\'' +
                 ", gender=" + gender +

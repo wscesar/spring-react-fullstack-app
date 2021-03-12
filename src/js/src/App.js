@@ -1,4 +1,5 @@
 import { Component } from 'react'
+import { Table } from 'antd'
 import './App.css';
 import { getAllStudents } from './client'
 
@@ -17,6 +18,7 @@ class App extends Component{
     getAllStudents().then(
       res => res.json().then(
         students => {
+          console.log(students)
           this.setState({students});
         })
       );
@@ -27,17 +29,40 @@ class App extends Component{
 
     if (students && students.length) {
 
-      return students.map((student, index) => {
-        return(
-          <div key={index}>
-            <h2>{student.studentId}</h2>
-            <p>{student.fistname}</p>
-            <p>{student.lastname}</p>
-            <p>{student.email}</p>
-            <p>{student.gender}</p>
-          </div>
-        )
-      });
+      const columns = [
+        {
+          title: 'Student Id',
+          dataIndex: 'studentId',
+          key: 'studentId',
+        },
+        {
+          title: 'First Name',
+          dataIndex: 'firstname',
+          key: 'firstname',
+        },
+        {
+          title: 'Last Name',
+          dataIndex: 'lastname',
+          key: 'lastname',
+        },
+        {
+          title: 'Email',
+          dataIndex: 'email',
+          key: 'email',
+        }
+        ,
+        {
+          title: 'Gender',
+          dataIndex: 'gender',
+          key: 'gender',
+        }
+      ]
+
+      return <Table
+        dataSource={students}
+        columns={columns}
+        rowKey='studentId'  
+        />
     
     }
 
