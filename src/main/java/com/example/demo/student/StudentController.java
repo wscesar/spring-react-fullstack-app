@@ -1,5 +1,6 @@
 package com.example.demo.student;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,16 +10,19 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("students")
 public class StudentController {
 
+    private final StudentService studentService;
+
+    @Autowired
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
+
     @GetMapping
-    @RequestMapping("students")
     List<Student> getAllStudents() {
-        Student s1 = new Student(UUID.randomUUID(),"James","Bond","jamesbond@gmail.com", Student.Gender.Male);
-        Student s2 = new Student(UUID.randomUUID(),"Anna","Bond","annabond@gmail.com", Student.Gender.Female);
-        return Arrays.asList(s1,s2);
+        return studentService.getAllStudents();
     }
 
 }
-
