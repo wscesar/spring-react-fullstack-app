@@ -1,5 +1,6 @@
 package com.example.demo.student;
 
+import com.example.demo.exception.RequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,11 +20,12 @@ public class StudentController {
 
     @GetMapping
     List<Student> getAllStudents() {
+//        throw new RequestException("Ops from custom exception");
         return studentService.getAllStudents();
     }
 
     @PostMapping
-    public void addStudent(@RequestBody Student student) {
+    public void addStudent(@RequestBody     Student student) {
         this.studentService.addStudent(student);
     }
 

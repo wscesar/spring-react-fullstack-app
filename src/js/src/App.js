@@ -27,17 +27,20 @@ class App extends Component{
   fetchStudents = () => {
     this.setState({
       isLoading: true
-    })
+    });
 
-    getAllStudents().then(
-      res => res.json().then(
-        students => {
+    getAllStudents()
+      .then( res => res.json()
+      .then( students => {
           this.setState({
             students: students,
             isLoading: false
           });
         })
-      );
+      ).catch(err => {
+        alert('catch');
+        console.log(err);
+      })
   }
 
   render() {
