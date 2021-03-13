@@ -18,12 +18,34 @@ public class StudentRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Student> getAllStudents() {
+    Student getStudent(UUID id) {
+        String sql =
+                "select student_id, first_name, last_name, email, gender " +
+                "from tbl_students where id = " + id;
+
+        return null;
+            //        return jdbcTemplate.query(sql, Student);
+    }
+
+    int addStudent(Student student) {
+        String sql = "INSERT INTO tbl_students(student_id, first_name, last_name, email, gender) VALUES(?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(
+                sql,
+                UUID.randomUUID(),
+                student.getFirstname(),
+                student.getLastname(),
+                student.getEmail(),
+                student.getGender().name()
+        );
+
+    }
+
+    List<Student> getAllStudents() {
         String sql = "select student_id, first_name, last_name, email, gender from tbl_students";
         return jdbcTemplate.query(sql, mapStudentsFromDb());
     }
 
-    private RowMapper<Student> mapStudentsFromDb() {
+    RowMapper<Student> mapStudentsFromDb() {
         return  (resultSet, i) -> {
             String studentIdStr = resultSet.getString("student_id");
             UUID studentId = UUID.fromString(studentIdStr);
@@ -38,5 +60,4 @@ public class StudentRepository {
             return new Student(studentId, firstName, lastName, email, gender);
         };
     }
-
 }

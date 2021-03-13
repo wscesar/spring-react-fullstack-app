@@ -1,5 +1,7 @@
 package com.example.demo.student;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.UUID;
 
 public class Student {
@@ -12,7 +14,13 @@ public class Student {
 
     enum Gender {Male, Female}
 
-    public Student(UUID studentId, String firstname, String lastname, String email, Gender gender) {
+    public Student(
+            @JsonProperty("studentId") UUID studentId,
+            @JsonProperty("firstName") String firstname,
+            @JsonProperty("lastName") String lastname,
+            @JsonProperty("email") String email,
+            @JsonProperty("gender") Gender gender
+    ) {
         this.studentId = studentId;
         this.firstname = firstname;
         this.lastname = lastname;

@@ -1,9 +1,10 @@
 import { Component } from 'react'
-import { Table, Avatar, Spin, Icon } from 'antd'
+import { Table, Avatar, Spin, Modal } from 'antd'
 import './App.css';
 import { getAllStudents } from './client'
-import { Container } from './Container'
+import { Footer } from './Footer'
 import { LoadingOutlined } from '@ant-design/icons';
+import AddStudentForm from './forms/AddStudentForm';
 
 
 const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
@@ -12,8 +13,12 @@ class App extends Component{
   
   state = {
     students: [],
-    isLoading: false
+    isLoading: false,
+    isModalVisible: false
   }
+
+  openModal = () => this.setState({isModalVisible: true});
+  closeModal = () => this.setState({isModalVisible: false});
 
   componentDidMount() {
     this.fetchStudents();
@@ -28,21 +33,18 @@ class App extends Component{
       res => res.json().then(
         students => {
           this.setState({
-            students,
+            students: students,
             isLoading: false
           });
         })
       );
   }
 
-  
   render() {
-    const { students, isLoading } = this.state
+    const { students, isLoading, isModalVisible } = this.state;
 
     if (isLoading) {
-      return <Container>
-        <Spin indicator={loadingIcon}></Spin>
-      </Container>
+      return <Spin indicator={loadingIcon}></Spin>
     }
 
     if (students && students.length) {
@@ -54,8 +56,8 @@ class App extends Component{
           render: (text, student) => (
             <Avatar size='large'>
               {
-                student.firstname.charAt(0).toUpperCase() +
-                student.lastname.charAt(0).toUpperCase()
+                student.firstName.charAt(0).toUpperCase() +
+                student.lastName.charAt(0).toUpperCase()
               }
             </Avatar>
           )
@@ -67,13 +69,13 @@ class App extends Component{
         },
         {
           title: 'First Name',
-          dataIndex: 'firstname',
-          key: 'firstname',
+          dataIndex: 'firstName',
+          key: 'firstName',
         },
         {
           title: 'Last Name',
-          dataIndex: 'lastname',
-          key: 'lastname',
+          dataIndex: 'lastName',
+          key: 'lastName',
         },
         {
           title: 'Email',
@@ -88,14 +90,45 @@ class App extends Component{
         }
       ]
 
-      return <Container>
-        <Table
-          dataSource={students}
-          columns={columns}
-          pagination={false}
-          rowKey='studentId'  
-          />
-      </Container>
+      const style = {
+        width: '1200px',
+        margin: '15px auto',
+        paddingBottom: '100px',
+        maxWidth: 'calc(100% - 30px)',
+        maxHeight: 'calc(100vh - 130px)',
+        textAlign: 'center'
+      }
+
+      return <div>
+          
+          <div style={style}>
+            <Table
+              style={style}
+              dataSource={students}
+              columns={columns}
+              pagination={false}
+              rowKey='studentId' />
+          </div>
+            
+          <Modal
+            title="Add Student"
+            visible={isModalVisible}
+            onOk={this.closeModal}
+            onCancel={this.closeModal}
+            width={1000} >
+            
+            <AddStudentForm 
+              onSuccess={() => {
+                this.closeModal();
+                this.fetchStudents();
+              }} />
+
+          </Modal>
+
+
+          <Footer handleClick={this.openModal} />
+
+        </div>
     
     }
 

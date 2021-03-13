@@ -1,12 +1,12 @@
 package com.example.demo.student;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class StudentService {
+
     private final StudentRepository studentRepository;
 
     @Autowired
@@ -15,8 +15,11 @@ public class StudentService {
     }
 
     public List<Student> getAllStudents() {
-        String sql = "";
         return this.studentRepository.getAllStudents();
+    }
+
+    public void addStudent(Student student) {
+        this.studentRepository.addStudent(student);
     }
 
 }

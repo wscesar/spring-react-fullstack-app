@@ -3,13 +3,6 @@ server:
     servlet:
         context-path: /api/v1
 
-#app:
-#    datasource:
-#        jdbc-url: jdbc:postgresql://localhost:5432/db_test
-#        username: postgres
-#        password: backoffice
-#        poolsize: 30
-
 spring:
     datasource:
         url: jdbc:postgresql://localhost:5432/db_test
