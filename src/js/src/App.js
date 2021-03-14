@@ -1,10 +1,11 @@
 import { Component } from 'react'
-import { Table, Avatar, Spin, Modal } from 'antd'
+import { Table, Avatar, Spin, Modal, Empty } from 'antd'
 import './App.css';
 import { getAllStudents } from './client'
 import { Footer } from './Footer'
 import { LoadingOutlined } from '@ant-design/icons';
 import AddStudentForm from './forms/AddStudentForm';
+import { errorNotification } from './Notification'
 
 
 const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
@@ -32,19 +33,48 @@ class App extends Component{
     getAllStudents()
       .then( res => res.json()
       .then( students => {
+          console.log(students)
           this.setState({
             students: students,
             isLoading: false
           });
         })
-      ).catch(err => {
-        alert('catch');
-        console.log(err);
+      )
+      .catch(err => {
+        // alert('catch')
+        // console.log(err)
+        // console.log(err.error)
+        // console.log(err.error.message)
+        // errorNotification(err.error, err.error)
+        this.setState({
+          isLoading: false
+        });
       })
   }
 
   render() {
     const { students, isLoading, isModalVisible } = this.state;
+
+    const commonElements = () => (
+      <div>
+        <Modal
+            title="Add Student"
+            visible={isModalVisible}
+            onOk={this.closeModal}
+            onCancel={this.closeModal}
+            width={1000} >
+            
+            <AddStudentForm 
+              onSuccess={() => {
+                this.closeModal();
+                this.fetchStudents();
+              }} />
+
+          </Modal>
+
+          <Footer handleClick={this.openModal} />
+      </div>
+    )
 
     if (isLoading) {
       return <Spin indicator={loadingIcon}></Spin>
@@ -96,46 +126,38 @@ class App extends Component{
       const style = {
         width: '1200px',
         margin: '15px auto',
-        paddingBottom: '100px',
         maxWidth: 'calc(100% - 30px)',
         maxHeight: 'calc(100vh - 130px)',
         textAlign: 'center'
       }
 
+      const style2 = {
+        float: 'left',
+        paddingBottom: '100px',
+        width: '100%',
+      }
+
       return <div>
-          
-          <div style={style}>
-            <Table
-              style={style}
-              dataSource={students}
-              columns={columns}
-              pagination={false}
-              rowKey='studentId' />
+          <div style={style2}>
+            <div style={style}>
+              <Table
+                dataSource={students}
+                columns={columns}
+                pagination={false}
+                rowKey='studentId' />
+            </div>
           </div>
-            
-          <Modal
-            title="Add Student"
-            visible={isModalVisible}
-            onOk={this.closeModal}
-            onCancel={this.closeModal}
-            width={1000} >
-            
-            <AddStudentForm 
-              onSuccess={() => {
-                this.closeModal();
-                this.fetchStudents();
-              }} />
-
-          </Modal>
-
-
-          <Footer handleClick={this.openModal} />
-
+          {commonElements()}
         </div>
     
     }
 
-    return <h1>No students found</h1>
+    return (
+      <div>
+        <Empty description = {<h1>No students found</h1>} />
+        {commonElements()}
+      </div>
+    )
 
   }
 }
