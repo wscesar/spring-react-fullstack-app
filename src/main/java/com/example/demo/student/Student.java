@@ -1,22 +1,21 @@
 package com.example.demo.student;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sun.istack.internal.NotNull;
 
 import java.util.UUID;
 
 public class Student {
 
-
     private final UUID studentId;
-    @NotNull private final String firstname;
-    @NotNull private final String lastname;
+    private final String firstname;
+    private final String lastname;
     private final String email;
-    @NotNull private final Gender gender;
+    private final Gender gender;
 
     enum Gender {Male, Female}
 
     public Student(
+
             @JsonProperty("studentId") UUID studentId,
             @JsonProperty("firstName") String firstname,
             @JsonProperty("lastName") String lastname,

@@ -23,8 +23,8 @@ public class StudentRepository {
                 "select student_id, first_name, last_name, email, gender " +
                 "from tbl_students where id = " + id;
 
+//        return jdbcTemplate.query(sql, Student);
         return null;
-            //        return jdbcTemplate.query(sql, Student);
     }
 
     int addStudent(Student student) {
@@ -59,5 +59,12 @@ public class StudentRepository {
 
             return new Student(studentId, firstName, lastName, email, gender);
         };
+    }
+
+    int deleteStudent(UUID studentId) {
+        String sql = "" +
+                "DELETE FROM tbl_students " +
+                "WHERE student_id = ?";
+        return jdbcTemplate.update(sql, studentId);
     }
 }

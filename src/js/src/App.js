@@ -52,7 +52,11 @@ class App extends Component{
       })
   }
 
+  didComponentMound(){
+    alert("")
+  }
   render() {
+    
     const { students, isLoading, isModalVisible } = this.state;
 
     const commonElements = () => (

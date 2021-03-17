@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -19,14 +20,17 @@ public class StudentController {
 
     @GetMapping
     List<Student> getAllStudents() {
-        throw new IllegalStateException("Ops, bad, bad server....");
-//        throw new RequestException("Ops from custom exception");
-//        return studentService.getAllStudents();
+        return studentService.getAllStudents();
     }
 
     @PostMapping
     public void addStudent(@RequestBody Student student) {
         this.studentService.addStudent(student);
+    }
+
+    @DeleteMapping("{studentId}")
+    public void deleteStudent(@PathVariable("studentId") UUID studentId) {
+        studentService.deleteStudent(studentId);
     }
 
 }

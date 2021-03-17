@@ -22,4 +22,7 @@ public class StudentService {
         this.studentRepository.addStudent(student);
     }
 
+    public void deleteStudent(UUID studentId) {
+        this.studentRepository.deleteStudent(studentId);
+    }
 }
